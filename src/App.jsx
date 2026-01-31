@@ -48,11 +48,14 @@ const generateContent = async (prompt, systemInstruction) => {
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
+    let content = data.choices?.[0]?.message?.content;
 
     if (!content) {
       throw new Error("Empty response from model");
     }
+
+    // 清理 Markdown 代码块标记 (例如 ```json ... ```)
+    content = content.replace(/```json\s*/g, "").replace(/```\s*$/g, "").trim();
 
     return JSON.parse(content);
   } catch (error) {
@@ -402,8 +405,8 @@ const App = () => {
                         key={opt}
                         onClick={() => handleSelectOption(q.id, opt)}
                         className={`text-left px-5 py-4 rounded-xl text-sm transition-all flex items-center justify-between border-2 ${!customInputModes[q.id] && answers[q.id] === opt
-                            ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
-                            : 'bg-slate-50 border-transparent hover:bg-slate-100 text-slate-600 hover:border-slate-200'
+                          ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
+                          : 'bg-slate-50 border-transparent hover:bg-slate-100 text-slate-600 hover:border-slate-200'
                           }`}
                       >
                         <span className="line-clamp-2">{opt}</span>
@@ -415,8 +418,8 @@ const App = () => {
                     <button
                       onClick={() => handleSelectOther(q.id)}
                       className={`text-left px-5 py-4 rounded-xl text-sm transition-all flex items-center justify-between border-2 ${customInputModes[q.id]
-                          ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
-                          : 'bg-slate-50 border-transparent hover:bg-slate-100 text-slate-600 hover:border-slate-200'
+                        ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
+                        : 'bg-slate-50 border-transparent hover:bg-slate-100 text-slate-600 hover:border-slate-200'
                         }`}
                     >
                       <span className="flex items-center gap-2"><PenTool size={14} /> 其他情况 (手动输入)</span>
@@ -482,8 +485,8 @@ const App = () => {
                 // 另外，给非推荐卡片设置低层级，避免hover时的层级混乱
                 return (
                   <div key={index} className={`relative rounded-2xl border-2 transition-all flex flex-col ${isRecommended
-                      ? 'bg-white border-blue-500 shadow-xl shadow-blue-500/10 z-10 scale-[1.02]'
-                      : 'bg-white border-slate-100 shadow-md grayscale-[0.1] hover:grayscale-0 z-0'
+                    ? 'bg-white border-blue-500 shadow-xl shadow-blue-500/10 z-10 scale-[1.02]'
+                    : 'bg-white border-slate-100 shadow-md grayscale-[0.1] hover:grayscale-0 z-0'
                     }`}>
                     {isRecommended && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-sm">
