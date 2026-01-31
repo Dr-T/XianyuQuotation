@@ -54,10 +54,20 @@ const generateContent = async (prompt, systemInstruction) => {
       throw new Error("Empty response from model");
     }
 
-    // 清理 Markdown 代码块标记 (例如 ```json ... ```)
-    content = content.replace(/```json\s*/g, "").replace(/```\s*$/g, "").trim();
+    // 尝试提取 JSON 部分 (从第一个 { 到 最后一个 })
+    const firstBrace = content.indexOf('{');
+    const lastBrace = content.lastIndexOf('}');
 
-    return JSON.parse(content);
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      content = content.substring(firstBrace, lastBrace + 1);
+    }
+
+    try {
+      return JSON.parse(content);
+    } catch (e) {
+      console.error("JSON Parse Error. Raw content:", content);
+      throw new Error(`JSON 解析失败: ${e.message}`);
+    }
   } catch (error) {
     console.error("OpenAI API Error:", error);
     throw error;
