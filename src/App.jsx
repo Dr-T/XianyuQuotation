@@ -360,7 +360,7 @@ const App = () => {
             <div className="relative group shadow-sm rounded-xl">
               <textarea
                 className="w-full h-48 p-6 bg-white border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-lg resize-none placeholder-slate-300"
-                placeholder="例如：我想做一个能自动写小红书文案的工具，最好能模仿我喜欢的博主风格..." value={userRequest} onChange={(e) => setUserRequest(e.target.value)}
+                placeholder="例如：我想做一个能模仿我喜欢的博主风格自动写小红书文案的工具；或者想实现闲鱼自动发货机器人..." value={userRequest} onChange={(e) => setUserRequest(e.target.value)}
               />
               <div className="absolute bottom-4 right-4 text-sm text-slate-400 group-focus-within:text-blue-500 font-medium">
                 {userRequest.length} 字
