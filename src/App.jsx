@@ -289,7 +289,14 @@ const App = () => {
     textArea.select();
     try {
       document.execCommand('copy');
-      alert("已复制！请直接粘贴发送给卖家客服。");
+      const contactUrl = import.meta.env.VITE_CONTACT_SELLER_URL;
+      if (contactUrl) {
+        // 如果配置了跳转链接，则直接跳转
+        alert("方案已复制！正在为您跳转到客服页面...");
+        window.open(contactUrl, '_blank');
+      } else {
+        alert("已复制！请直接粘贴发送给卖家客服。");
+      }
     } catch (err) {
       console.error('Unable to copy', err);
     }
@@ -577,7 +584,7 @@ const App = () => {
                 onClick={copyToClipboard}
                 className="flex-[2] bg-blue-600 text-white font-bold py-4 rounded-xl shadow-blue-500/30 shadow-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all active:scale-[0.99] text-lg"
               >
-                复制方案联系卖家 <Copy size={20} />
+                复制方案联系卖家 <MessageSquare size={20} />
               </button>
             </div>
           )}
